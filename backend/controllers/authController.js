@@ -18,6 +18,7 @@ const register = async (req, res) => {
       return res.status(409).json({ message: 'Email already exists' });
     }
 
+    // Sequelize hook handles password hashing before creation
     const user = await User.create({
       email,
       password,
@@ -28,7 +29,7 @@ const register = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
+      { expiresIn: '7d' }
     );
 
     res.status(201).json({
@@ -62,7 +63,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRATION }
+      { expiresIn: '7d' }
     );
 
     res.json({
