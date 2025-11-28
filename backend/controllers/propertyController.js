@@ -13,7 +13,7 @@ const createProperty = async (req, res) => {
       description,
       location,
       pricePerNight,
-      ownerId: req.user.id,
+      ownerId: req.user.id, // ID comes from the JWT payload
     });
 
     res.status(201).json({
@@ -27,6 +27,7 @@ const createProperty = async (req, res) => {
 
 const getProperties = async (req, res) => {
   try {
+    // Uses the 'owner' association defined in models/index.js
     const properties = await Property.findAll({
       include: [{ model: User, as: 'owner', attributes: ['id', 'name', 'email'] }],
     });
@@ -39,6 +40,7 @@ const getProperties = async (req, res) => {
 
 const getPropertyById = async (req, res) => {
   try {
+    // Uses the 'owner' association defined in models/index.js
     const property = await Property.findByPk(req.params.id, {
       include: [{ model: User, as: 'owner', attributes: ['id', 'name', 'email'] }],
     });
