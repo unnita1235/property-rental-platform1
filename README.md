@@ -1,263 +1,277 @@
-# Property Rental Platform
+Property Rental Platform
+A full-stack web application for managing property rentals with secure user authentication, role-based access control, and complete booking workflow management.
 
-A complete full-stack property rental platform with user authentication, property management, booking system, and payment processing.
+🚀 Features
+Authentication & Security
+Secure Registration & Login with bcrypt password hashing
 
-## Features
+JWT-based Authentication with 7-day token expiration
 
-✅ User Authentication (Owner & Customer roles)
-✅ Secure Password Hashing with bcryptjs
-✅ JWT Token-based Authorization
-✅ Property Management (Create, Read, Update, Delete)
-✅ Booking System with Status Workflow
-✅ Payment Processing & Recording
-✅ Role-Based Access Control
-✅ RESTful API Architecture
-✅ Responsive React Frontend
-✅ MySQL Relational Database
+Role-Based Access Control (Owner & Customer roles)
 
-## Technology Stack
+Protected API Endpoints with authorization middleware
 
-**Backend:**
-- Node.js & Express.js
-- MySQL 2 (mysql2/promise)
-- JWT for authentication
-- bcryptjs for password hashing
-- CORS support
+Property Management
+Owners can create, update, and delete their properties
 
-**Frontend:**
-- React 18
-- React Router DOM
-- Context API for state management
-- Axios for API calls
-- CSS3
+All authenticated users can view all listed properties
 
-**Database:**
-- MySQL 8.0+
+Property details include title, description, location, and price per night
 
-## Project Structure
-property-rental-platform/
-├── backend/
-│   ├── config/
-│   │   └── db.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Property.js
-│   │   ├── Booking.js
-│   │   └── Payment.js
-│   ├── middleware/
-│   │   └── auth.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── properties.js
-│   │   ├── bookings.js
-│   │   └── payments.js
-│   ├── server.js
-│   ├── .env
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── App.js
-│   │   ├── App.css
-│   │   └── index.js
-│   ├── public/
-│   ├── .env
-│   └── package.json
-├── database/
-│   └── schema.sql
-└── README.md
+Booking System
+Customers can request bookings by selecting rental dates
 
-## Installation & Setup
+Booking Status Workflow: Pending → Approved → Rejected → Completed
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MySQL Server
-- npm or yarn
+Only property owners can approve or reject booking requests
 
-### 1. Database Setup
-```bash
-mysql -u root -p < database/schema.sql
-```
+Automatic total price calculation based on nights and property price
 
-### 2. Backend Setup
-```bash
-cd backend
+Payment Processing
+Customers can record payments for approved bookings
+
+Multiple payment methods supported (Credit Card, Debit Card, PayPal, Bank Transfer)
+
+Booking auto-completion after successful payment recording
+
+Payment history tracking for customers
+
+🛠️ Tech Stack
+Backend
+Runtime: Node.js
+
+Framework: Express.js
+
+Database: PostgreSQL with Sequelize ORM
+
+Authentication: JWT + bcryptjs
+
+Security: CORS, environment variables
+
+Frontend
+Framework: React with React Router
+
+HTTP Client: Axios with interceptors
+
+State Management: React Hooks
+
+Styling: CSS3
+
+🗄️ Database Schema
+Entities & Relationships
+text
+Users (1) → (N) Properties
+Users (1) → (N) Bookings (as Customer)
+Properties (1) → (N) Bookings
+Bookings (1) → (1) Payments
+Tables Structure
+Users: id, email, password, name, role, createdAt, updatedAt
+
+Properties: id, ownerId, title, description, location, pricePerNight, availability, timestamps
+
+Bookings: id, propertyId, customerId, checkInDate, checkOutDate, status, totalPrice, timestamps
+
+Payments: id, bookingId, amount, paymentMethod, status, timestamps
+
+📦 Installation
+Prerequisites
+Node.js (v14 or higher)
+
+PostgreSQL (v12 or higher)
+
+npm or yarn
+
+Backend Setup
+bash
+# Clone repository
+git clone <repository-url>
+cd property-rental-platform/backend
+
+# Install dependencies
 npm install
+
+# Environment configuration
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Database setup
+npm run db:create
+npm run db:migrate
+
+# Start development server
 npm run dev
-```
+Frontend Setup
+bash
+cd ../frontend
 
-Backend runs on: `http://localhost:5000`
-
-### 3. Frontend Setup
-```bash
-cd frontend
+# Install dependencies
 npm install
+
+# Start development server
 npm start
-```
+🔧 Configuration
+Environment Variables
+Backend (.env)
 
-Frontend runs on: `http://localhost:3000`
-
-## Environment Variables
-
-### Backend (.env)
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=password123
-DB_NAME=property_rental_db
-JWT_SECRET=your_super_secret_jwt_key_12345
+env
+DATABASE_URL=postgresql://username:password@localhost:5432/property_rental_db
+JWT_SECRET=your_super_secret_jwt_key_change_in_production
 PORT=5000
 NODE_ENV=development
+🎯 Usage
+User Registration & Roles
+Register with email, password, name, and role (Owner/Customer)
 
-### Frontend (.env)
-REACT_APP_API_URL=http://localhost:5000/api
+Login to receive JWT token
 
-## API Endpoints
+Automatic routing to appropriate dashboard based on role
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
+Property Owner Flow
+Create Properties: Add property details, location, and pricing
 
-### Properties
-- `GET /api/properties` - Get all properties
-- `GET /api/properties/:id` - Get single property
-- `POST /api/properties` - Create property (Owner only)
-- `PUT /api/properties/:id` - Update property (Owner only)
-- `DELETE /api/properties/:id` - Delete property (Owner only)
+Manage Bookings: View, approve, or reject booking requests
 
-### Bookings
-- `GET /api/bookings` - Get bookings
-- `POST /api/bookings` - Create booking (Customer only)
-- `PATCH /api/bookings/:id/status` - Update status (Owner only)
+Track Payments: Monitor payment status for approved bookings
 
-### Payments
-- `POST /api/payments` - Record payment (Customer only)
-- `GET /api/payments` - Get all payments
-- `GET /api/payments/booking/:bookingId` - Get payment by booking
+Customer Flow
+Browse Properties: View all available rental properties
 
-## Booking Status Workflow
+Request Bookings: Select dates and submit booking requests
 
-1. **Pending** - Customer creates booking request
-2. **Approved** - Owner approves the booking
-3. **Rejected** - Owner rejects the booking
-4. **Completed** - Customer records payment
+Make Payments: Record payments for approved bookings
 
-## Sample User Accounts
+View History: Track booking and payment status
 
-**Owner Account:**
-- Email: `owner@test.com`
-- Password: `password123`
-- Role: Owner
+📡 API Endpoints
+Authentication
+POST /api/auth/register - User registration
 
-**Customer Account:**
-- Email: `customer@test.com`
-- Password: `password123`
-- Role: Customer
+POST /api/auth/login - User login
 
-## Database Schema
+Properties
+GET /api/properties - Get all properties (public)
 
-### Users Table
-- id (UUID)
-- email (Unique)
-- password (Hashed)
-- role (Owner/Customer)
-- created_at
+POST /api/properties - Create property (Owner only)
 
-### Properties Table
-- id (UUID)
-- owner_id (Foreign Key)
-- name
-- description
-- location
-- price_per_night
-- total_bedrooms
-- created_at
-- deleted_at (Soft delete)
+PUT /api/properties/:id - Update property (Owner only)
 
-### Bookings Table
-- id (UUID)
-- customer_id (Foreign Key)
-- property_id (Foreign Key)
-- start_date
-- end_date
-- status (Pending/Approved/Rejected/Completed)
-- created_at
+DELETE /api/properties/:id - Delete property (Owner only)
 
-### Payments Table
-- id (UUID)
-- booking_id (Foreign Key - Unique)
-- amount
-- payment_method
-- status
-- created_at
+Bookings
+POST /api/bookings - Request booking (Customer only)
 
-## Authorization Rules
+PATCH /api/bookings/:id/approve - Approve booking (Owner only)
 
-- Only Owners can create/update/delete their own properties
-- Only Owners can approve/reject bookings for their properties
-- Only Customers can create bookings
-- Only Customers can record payments for their own bookings
-- All users can view all properties
+PATCH /api/bookings/:id/reject - Reject booking (Owner only)
 
-## Error Handling
+GET /api/bookings/customer/list - Get customer bookings
 
-All API endpoints return consistent error responses:
-```json
-{
-  "message": "Error description",
-  "error": "Error details (if available)"
-}
-```
+GET /api/bookings/owner/list - Get owner's property bookings
 
-## CORS Configuration
+Payments
+POST /api/payments - Record payment (Customer only)
 
-Frontend and backend communicate across domains. CORS is enabled on backend for `http://localhost:3000`.
+GET /api/payments - Get payment history (Customer only)
 
-## Security Features
+🔒 Authorization Rules
+Role-Based Access
+Owners: Create/update/delete own properties, approve/reject bookings for own properties
 
-✅ Password hashing with bcryptjs (10 salt rounds)
-✅ JWT authentication (24h expiration)
-✅ Role-based access control
-✅ Authorization middleware on protected routes
-✅ SQL injection prevention with parameterized queries
-✅ Soft delete for properties (data preservation)
+Customers: Request bookings, make payments, view own booking/payment history
 
-## Troubleshooting
+Shared: View all properties
 
-### MySQL Connection Error
-- Check MySQL service is running
-- Verify credentials in .env file
-- Ensure database is created
+Data Protection
+Users can only modify their own properties
 
-### Port Already in Use
-- Backend: Change PORT in .env
-- Frontend: Use `PORT=3001 npm start`
+Owners can only manage bookings for their properties
 
-### JWT Token Expired
-- Token expires after 24 hours
-- User needs to login again
+Customers can only access their own bookings and payments
 
-### CORS Error
-- Ensure backend is running on port 5000
-- Check frontend .env has correct API URL
+📋 Assumptions
+Password Security: Minimum 6 characters, bcrypt hashing with salt rounds 10
 
-## Future Enhancements
+Booking Validation: Check-out date must be after check-in date
 
-- Email notifications
-- Advanced search & filtering
-- Review & rating system
-- Cancellation policies
-- Multi-currency support
-- Stripe/PayPal integration
-- Two-factor authentication
-- Admin dashboard
+Payment Processing: Simulated payment flow (no real payment gateway)
 
-## License
+Date Handling: ISO 8601 format for all dates
 
-MIT License
+Price Calculation: Total = pricePerNight × number of nights
 
-## Support
+Status Flow: Strict workflow enforcement (Pending→Approved→Completed)
 
-For issues or questions, please create an issue in the repository.
+🧪 Sample Test Data
+Test Credentials
+text
+Owner Account:
+Email: owner@example.com
+Password: password123
+Role: Owner
 
+Customer Account:
+Email: customer@example.com
+Password: password123
+Role: Customer
+Sample Properties
+Beach House, Miami, FL - $150/night
+
+Mountain Cabin, Aspen, CO - $120/night
+
+City Apartment, New York, NY - $200/night
+
+🚀 Deployment
+Production Build
+bash
+# Backend
+cd backend
+npm run build
+npm start
+
+# Frontend
+cd frontend
+npm run build
+# Serve built files with nginx or similar
+Environment Setup
+Set NODE_ENV=production
+
+Configure production database
+
+Update CORS settings for production domain
+
+Set strong JWT secret
+
+📁 Project Structure
+text
+property-rental-platform/
+├── backend/
+│   ├── config/          # Database configuration
+│   ├── controllers/     # Route controllers
+│   ├── middleware/      # Auth & validation
+│   ├── models/          # Sequelize models
+│   ├── routes/          # API routes
+│   └── server.js        # Entry point
+├── frontend/
+│   ├── src/
+│   │   ├── pages/       # React components
+│   │   ├── services/    # API calls
+│   │   └── styles/      # CSS files
+│   └── public/
+└── README.md
+🔮 Future Enhancements
+Email notifications for booking status changes
+
+Advanced property search and filtering
+
+Review and rating system
+
+Image upload for properties
+
+Calendar-based availability management
+
+Real-time messaging between owners and customers
+
+Admin dashboard for platform management
+
+📞 Support
+For technical support or questions about this implementation, please refer to the source code documentation or create an issue in the project repository.
