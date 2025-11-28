@@ -10,6 +10,10 @@ const Payment = sequelize.define('Payment', {
   bookingId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Bookings', // References the Bookings table
+      key: 'id',
+    },
   },
   amount: {
     type: DataTypes.DECIMAL(10, 2),
