@@ -10,10 +10,18 @@ const Booking = sequelize.define('Booking', {
   propertyId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Properties', // References the Properties table
+      key: 'id',
+    },
   },
   customerId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Users', // References the Users table
+      key: 'id',
+    },
   },
   checkInDate: {
     type: DataTypes.DATEONLY,
