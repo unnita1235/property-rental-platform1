@@ -26,8 +26,13 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('Owner', 'Customer'),
     allowNull: false,
   },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
 }, {
   hooks: {
+    // Hash password before saving a new user
     beforeCreate: async (user) => {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(user.password, salt);
@@ -36,6 +41,7 @@ const User = sequelize.define('User', {
   timestamps: true,
 });
 
+// Instance method to compare passwords
 User.prototype.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
