@@ -10,6 +10,10 @@ const Property = sequelize.define('Property', {
   ownerId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: {
+      model: 'Users', // References the Users table
+      key: 'id',
+    },
   },
   title: {
     type: DataTypes.STRING,
