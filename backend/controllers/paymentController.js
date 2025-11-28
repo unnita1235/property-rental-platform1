@@ -21,6 +21,11 @@ const recordPayment = async (req, res) => {
       return res.status(400).json({ message: 'Can only pay for approved bookings' });
     }
 
+    // Check if payment amount matches booking total (basic check)
+    if (parseFloat(amount) < parseFloat(booking.totalPrice)) {
+      return res.status(400).json({ message: 'Payment amount is less than the total price.' });
+    }
+
     const payment = await Payment.create({
       bookingId,
       amount,
@@ -28,6 +33,7 @@ const recordPayment = async (req, res) => {
       status: 'Completed',
     });
 
+    // Update booking status to 'Completed' after successful payment
     await booking.update({ status: 'Completed' });
 
     res.status(201).json({
@@ -41,12 +47,14 @@ const recordPayment = async (req, res) => {
 
 const getPayments = async (req, res) => {
   try {
+    // Get payments associated with the logged-in customer's bookings
     const payments = await Payment.findAll({
       include: [
         {
           model: Booking,
           as: 'booking',
           where: { customerId: req.user.id },
+          attributes: ['id', 'propertyId', 'checkInDate', 'totalPrice'],
         },
       ],
     });
