@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
+  dialect: 'mysql',
   logging: false, 
   ssl: process.env.NODE_ENV === 'production',
   dialectOptions: {
