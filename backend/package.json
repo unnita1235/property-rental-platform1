@@ -8,14 +8,15 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.9.1",
-    "sequelize": "^6.37.7",
-    "uuid": "^9.0.1"
+  "bcryptjs": "^2.4.3",
+  "cors": "^2.8.5",
+  "dotenv": "^16.6.1",
+  "express": "^4.21.2",
+  "jsonwebtoken": "^9.0.2",
+  "mysql2": "^3.9.1",      
+  "sequelize": "^6.37.7",
+  "uuid": "^9.0.1"
+},
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
