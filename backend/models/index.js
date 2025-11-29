@@ -1,3 +1,4 @@
+const sequelize = require('../config/db');
 const User = require('./User');
 const Property = require('./Property');
 const Booking = require('./Booking');
@@ -16,4 +17,4 @@ Booking.belongsTo(Property, { foreignKey: 'propertyId', as: 'property' });
 Booking.hasOne(Payment, { foreignKey: 'bookingId', as: 'payment' });
 Payment.belongsTo(Booking, { foreignKey: 'bookingId', as: 'booking' });
 
-module.exports = { User, Property, Booking, Payment, sequelize: require('../config/database') };
+module.exports = { User, Property, Booking, Payment, sequelize };
