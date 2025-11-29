@@ -1,10 +1,13 @@
+const mysql = require('mysql2/promise');
 
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
-
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'mysql', 
-  logging: false,
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'password123',
+  database: process.env.DB_NAME || 'property_rental_db',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-module.exports = sequelize;
+module.exports = pool;
