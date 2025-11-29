@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: property-rental-backend
+    env: node
+    plan: free
+    region: oregon
+    branch: main
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: DB_HOST
+        value: your_db_host
+      - key: DB_USER
+        value: your_db_user
+      - key: DB_PASSWORD
+        value: your_db_password
+      - key: DB_NAME
+        value: property_rental_db
+      - key: JWT_SECRET
+        value: your_super_secret_jwt_key_12345
+      - key: PORT
+        value: 5000
